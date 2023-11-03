@@ -1,0 +1,13 @@
+﻿<!--这里添加打包使用的配置文档-->
+
+<Project>
+  <PropertyGroup>
+    <UseWPF>false</UseWPF>
+    <Version>0.0.0.1</Version>
+    <FileVersion>0.0.0.1</FileVersion>
+    <AssemblyVersion>0.0.0.1</AssemblyVersion>
+    <LangVersion>latest</LangVersion>
+    <Authors>pchuan98</Authors>
+    <RepositoryUrl>https://github.com/pchuan98/lift.core</RepositoryUrl>
+  </PropertyGroup>
+</Project>

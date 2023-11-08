@@ -7,7 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lift.Core", "Lift.Core\Lift
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lift.Core.Test", "Lift.Core.Test\Lift.Core.Test.csproj", "{D8294589-95BA-439C-9228-0ED590A7F380}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lift.Core.Benchmarks", "Lift.Core.Benchmarks\Lift.Core.Benchmarks.csproj", "{BBF09052-F6FA-4D82-B72F-F549677C37C3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Lift.Core.Benchmarks", "Lift.Core.Benchmarks\Lift.Core.Benchmarks.csproj", "{BBF09052-F6FA-4D82-B72F-F549677C37C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lift.Core.Tiny", "Lift.Core.Tiny\Lift.Core.Tiny.csproj", "{9DC7F3D5-8DD1-42EE-80D7-9D8E9BD3C384}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Lift.Core.Share", "Lift.Core.Share\Lift.Core.Share.shproj", "{FD8190C7-980A-403D-AE4A-33ED188C20C2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "others", "others", "{CD738904-3A54-4916-B1EB-B7D89AF43EA4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,11 +33,24 @@ Global
 		{BBF09052-F6FA-4D82-B72F-F549677C37C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BBF09052-F6FA-4D82-B72F-F549677C37C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BBF09052-F6FA-4D82-B72F-F549677C37C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DC7F3D5-8DD1-42EE-80D7-9D8E9BD3C384}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DC7F3D5-8DD1-42EE-80D7-9D8E9BD3C384}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DC7F3D5-8DD1-42EE-80D7-9D8E9BD3C384}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DC7F3D5-8DD1-42EE-80D7-9D8E9BD3C384}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D8294589-95BA-439C-9228-0ED590A7F380} = {CD738904-3A54-4916-B1EB-B7D89AF43EA4}
+		{BBF09052-F6FA-4D82-B72F-F549677C37C3} = {CD738904-3A54-4916-B1EB-B7D89AF43EA4}
+	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {509E91F7-8ACB-493E-AF46-43E20C6B53FB}
+	EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Lift.Core.Share\Lift.Core.Share.projitems*{0d257639-22df-4f60-ac55-3fd1c78dc34d}*SharedItemsImports = 5
+		Lift.Core.Share\Lift.Core.Share.projitems*{9dc7f3d5-8dd1-42ee-80d7-9d8e9bd3c384}*SharedItemsImports = 5
+		Lift.Core.Share\Lift.Core.Share.projitems*{fd8190c7-980a-403d-ae4a-33ed188c20c2}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal

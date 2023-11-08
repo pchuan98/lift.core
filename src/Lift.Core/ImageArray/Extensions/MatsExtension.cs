@@ -1,8 +1,7 @@
 ﻿using Lift.Core.Common;
 using Lift.Core.Exception;
 
-
-namespace Lift.Core.Extensions;
+namespace Lift.Core.ImageArray.Extensions;
 
 public static class MatsExtension
 {
@@ -77,7 +76,7 @@ public static class MatsExtension
         Parallel.For(0, count, new ParallelOptions() { MaxDegreeOfParallelism = thread }, (z) =>
         {
             var mat = mats[z];
-            mat.MinMaxLoc(out double tMin, out double tMax);
+            mat.MinMaxLoc(out var tMin, out var tMax);
 
             lMin[z] = tMin;
             lMax[z] = tMax;
@@ -126,7 +125,7 @@ public static class MatsExtension
         {
             for (var i = 0; i < depth; i++)
             {
-                mats[i].MinMaxIdx(out double minval, out double maxval);
+                mats[i].MinMaxIdx(out var minval, out var maxval);
                 min = minval < min ? minval : min;
                 max = maxval > max ? maxval : max;
             }
@@ -151,7 +150,7 @@ public static class MatsExtension
             });
 
             array = new float[lenght];
-            System.Array.Copy(data, array, width * height * depth);
+            Array.Copy(data, array, width * height * depth);
 
             return;
         }
@@ -169,7 +168,7 @@ public static class MatsExtension
         });
 
         array = new float[lenght];
-        System.Array.Copy(data, array, width * height * depth);
+        Array.Copy(data, array, width * height * depth);
     }
 
     /// <summary>

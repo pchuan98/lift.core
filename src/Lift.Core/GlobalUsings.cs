@@ -5,4 +5,6 @@ global using System.Text;
 global using System.Threading.Tasks;
 global using OpenCvSharp;
 
-global using ImageArray = Lift.Core.Common.Array;
+global using Lift.Core.Exception;
+
+global using NotSupportedException = Lift.Core.Exception.NotSupportedException;

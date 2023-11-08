@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Lift.Core.Exception;
+using Lift.Core.ImageArray.Extensions;
 
 namespace Lift.Core.Extensions.Image;
 

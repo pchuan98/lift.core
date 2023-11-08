@@ -1,9 +1,8 @@
-﻿using Lift.Core.Exception;
+﻿using System.Diagnostics;
 
+namespace Lift.Core.ImageArray.Extensions;
 
-namespace Lift.Core.Extensions;
-
-public enum MatTypeAsInt
+internal enum MatTypeAsInt
 {
     CV_8UC1 = 0,
     CV_8UC2 = -1,
@@ -42,15 +41,14 @@ public static class MatExtension
         var rec = new Mat();
         var type = mat.Type();
 
+        if (type == MatType.CV_8UC1)
+            return mat;
         if (type == MatType.CV_32FC1)
             mat.ConvertTo(rec, MatType.CV_8U, byte.MaxValue);
         if (type == MatType.CV_16UC1)
             mat.ConvertTo(rec, MatType.CV_8U, 1.0 / (byte.MaxValue + 2));
-        else throw new InvalidException($"Not support type : {type}");
 
-        var t = rec.Type();
-        rec.GetArray(out byte[] data);
-        mat.GetArray(out ushort[] vvData);
+        else throw new NotSupportedException($"Not support type : {type}");
 
         return rec;
     }

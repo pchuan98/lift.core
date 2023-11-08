@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace Lift.Core.Helper;
+namespace Lift.Core.ImageArray.Helper;
 
-public static class ArrayHelper
+// todo lut解析和设置
+internal class LutHelper
 {
-
 }

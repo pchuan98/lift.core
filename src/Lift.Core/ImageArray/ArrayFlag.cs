@@ -1,4 +1,4 @@
-﻿namespace Lift.Core.Constant;
+﻿namespace Lift.Core.ImageArray;
 
 /// <summary>
 /// 向量标记

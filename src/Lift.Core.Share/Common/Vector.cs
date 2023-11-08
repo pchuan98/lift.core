@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Lift.Core.Common;
 
-public class Vector
+public struct Vector
 {
     public int Id => Guid.NewGuid().GetHashCode();
 

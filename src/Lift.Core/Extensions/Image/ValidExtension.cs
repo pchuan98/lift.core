@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Lift.Core.Constant;
+using Lift.Core.ImageArray;
 
 namespace Lift.Core.Extensions.Image;
 

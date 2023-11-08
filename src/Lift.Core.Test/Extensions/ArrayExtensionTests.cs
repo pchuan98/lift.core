@@ -1,11 +1,11 @@
-﻿using Lift.Core.Constant;
-using OpenCvSharp;
+﻿using OpenCvSharp;
 
 namespace Lift.Core.Test.Extensions
 {
     using System;
     using Lift.Core.Common;
     using Lift.Core.Extensions;
+    using Lift.Core.ImageArray;
     using Xunit;
 
     public static class ArrayExtensionTests

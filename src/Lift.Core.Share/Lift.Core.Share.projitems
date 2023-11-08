@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>fd8190c7-980a-403d-ae4a-33ed188c20c2</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Lift.Core.Share</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Common\Vector\VectorExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\Vector\VectorValue.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\Vector\VectorOperator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common\Vector\Vector.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Constant\ValueBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exception\InvalidException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exception\NotSupportedException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helper\JsonHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helper\RuntimeHelper.cs" />
+  </ItemGroup>
+</Project>

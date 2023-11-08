@@ -9,23 +9,13 @@
     <PackageIcon>lift.png</PackageIcon>
   </PropertyGroup>
 
+  <Import Project="..\Lift.Core.Share\Lift.Core.Share.projitems" Label="Shared" />
+
   <ItemGroup>
     <None Include="..\..\imgs\lift.png">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="MetadataExtractor" Version="2.8.1" />
-    <PackageReference Include="OpenCvSharp4" Version="4.8.0.20230708" />
-    <PackageReference Include="OpenCvSharp4.runtime.win" Version="4.8.0.20230708" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Utils\" />
-  </ItemGroup>
-
-  <Import Project="..\Lift.Core.Share\Lift.Core.Share.projitems" Label="Shared" />
 
 </Project>

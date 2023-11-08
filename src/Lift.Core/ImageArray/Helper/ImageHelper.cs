@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Lift.Core.Common;
+﻿using System.ComponentModel.DataAnnotations;
 using Lift.Core.ImageArray.Extensions;
-using OpenCvSharp;
 
 namespace Lift.Core.ImageArray.Helper;
 
@@ -35,6 +27,7 @@ public static class ImageHelper
             ".jpg" => OpencvImageHelper.ReadDefault(path),
             _ => throw new NotSupportedException("Not support this file extension.")
         };
+
     }
 }
 

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Lift.Core.Common;
+﻿namespace Lift.Core.Common;
 
 /**
  * Pixel        : 图像元素，图像的最小单位

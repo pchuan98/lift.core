@@ -1,41 +1,13 @@
-﻿using System.Diagnostics;
+﻿namespace Lift.Core.ImageArray.Extensions;
 
-namespace Lift.Core.ImageArray.Extensions;
-
-internal enum MatTypeAsInt
+public static partial class MatExtension
 {
-    CV_8UC1 = 0,
-    CV_8UC2 = -1,
-    CV_8UC3 = 16,
-    CV_8UC4 = -1,
-    CV_8SC1 = -1,
-    CV_8SC2 = -1,
-    CV_8SC3 = -1,
-    CV_8SC4 = -1,
-    CV_16UC1 = 2,
-    CV_16UC2 = -1,
-    CV_16UC3 = -1,
-    CV_16UC4 = -1,
-    CV_16SC1 = -1,
-    CV_16SC2 = -1,
-    CV_16SC3 = -1,
-    CV_16SC4 = -1,
-    CV_32SC1 = -1,
-    CV_32SC2 = -1,
-    CV_32SC3 = -1,
-    CV_32SC4 = -1,
-    CV_32FC1 = 5,
-    CV_32FC2 = -1,
-    CV_32FC3 = -1,
-    CV_32FC4 = -1,
-    CV_64FC1 = -1,
-    CV_64FC2 = -1,
-    CV_64FC3 = -1,
-    CV_64FC4 = -1,
-}
-
-public static class MatExtension
-{
+    /// <summary>
+    /// Converter to CV_8U
+    /// </summary>
+    /// <param name="mat"></param>
+    /// <returns></returns>
+    /// <exception cref="NotSupportedException"></exception>
     public static Mat ToU8(this Mat mat)
     {
         var rec = new Mat();
@@ -53,6 +25,12 @@ public static class MatExtension
         return rec;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="mat"></param>
+    /// <returns></returns>
+    /// <exception cref="System.Exception"></exception>
     public static Mat ToF32(this Mat mat)
     {
         var tempType = mat.Type();
@@ -66,18 +44,16 @@ public static class MatExtension
             _ => throw new System.Exception(),
         };
     }
-
-
-
-    public static bool Depth(this Mat mat, Type type)
-    {
-        return true;
-    }
 }
 
-
+/// <summary>
+/// 转换集成工具
+/// </summary>
 internal static class MatConverter
 {
+    /// <summary>
+    /// 单通道转换情况
+    /// </summary>
     public static class Channel1
     {
         public static Mat U8ToF32(Mat mat)
@@ -97,6 +73,9 @@ internal static class MatConverter
         }
     }
 
+    /// <summary>
+    /// 三通道转换情况
+    /// </summary>
     public static class Channel3
     {
         public static Mat U8ToF32(Mat mat)

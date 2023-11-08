@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Lift.Core.Common;
-
-namespace Lift.Core.ImageArray;
+﻿namespace Lift.Core.ImageArray;
 
 /**
  * The image orientation is as follows:
@@ -45,11 +38,22 @@ public class ImageArray : IDisposable
     {
         Width = mat.Width;
         Height = mat.Height;
-        StackCount = 1;
+        StackCount = 0;
 
         Object = mat;
         Flag = ArrayFlag.OpenCv;
     }
+
+    public ImageArray(Mat[] mats)
+    {
+        Width = mats[0].Width;
+        Height = mats[0].Height;
+        StackCount = mats.Length;
+
+        Object = mats;
+        Flag = ArrayFlag.OpenCv;
+    }
+
 
     /// <summary>
     /// image object data type

@@ -1,13 +1,6 @@
-﻿using System.Diagnostics;
-using Lift.Core.Exception;
-using Lift.Core.ImageArray.Extensions;
+﻿namespace Lift.Core.ImageArray.Extensions;
 
-namespace Lift.Core.Extensions.Image;
-
-/// <summary>
-/// 平面拼接和通道合并
-/// </summary>
-public static class MergeExtension
+public static partial class ImageArrayExtension
 {
     /// <summary>
     /// 
@@ -21,20 +14,18 @@ public static class MergeExtension
     /// <exception cref="NotImplementedException"></exception>
     public static ImageArray MergeArray(this IEnumerable<ImageArray> imgs, int cols, int rows, int thread = 1)
     {
-        var arrayList = imgs as ImageArray[] ?? imgs.ToArray();
+        if (imgs.Aggregate(true, (current, img) => current && img.IsMat()))
+            return MergeTools.MergeWithMats(imgs.Select(img => img.Object as Mat).ToArray()!, cols, rows, thread);
+        else
+            throw new NotSupportedException("");
+    }
+}
 
-        if (arrayList.Length != cols * rows)
-            throw new InvalidException("The len of array list must equal as cols*rows");
-
-        var isImg = arrayList.Aggregate(true, (current, img) => current & img.IsImage());
-        if (!isImg) throw new InvalidException("Current input imgs is not image array.");
-
-        var isMat = arrayList.Aggregate(true, (current, img) => current & img.IsMat());
-        if (!isMat) throw new InvalidException("The current data structure is not supported yet");
-
-        var mats = arrayList!.Select(w => w.ToMat()).ToArray();
-
-        if (mats.Any(m => m == null) || !mats!.SameShape())
+internal static class MergeTools
+{
+    internal static ImageArray MergeWithMats(Mat[] mats, int cols, int rows, int thread = 1)
+    {
+        if (mats.Any(m => m == null) || !mats!.SameShape(thread))
             throw new InvalidException("Currently only supports same shape matching.");
 
         var lines = new Mat[rows];

@@ -1,57 +1,7 @@
-﻿using Lift.Core.Common;
-using Lift.Core.Exception;
+﻿namespace Lift.Core.ImageArray.Extensions;
 
-namespace Lift.Core.ImageArray.Extensions;
-
-public static class MatsExtension
+public static partial class MatsExtension
 {
-    public const double DoubleThreshold = 0.00001;
-
-    #region Type Converter
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="mats"></param>
-    /// <returns></returns>
-    public static Mat[] ToF32(this Mat[] mats)
-    {
-        var ms = new Mat[mats.Length];
-
-        for (var i = 0; i < mats.Length; i++)
-            ms[i] = mats[i].ToF32();
-
-        ms[0].GetArray(out float[] aData);
-        return ms;
-    }
-
-    #endregion
-
-
-    public static bool SameShape(this Mat[] mats, int thread = 8)
-    {
-        // todo:后面可以使用多线程+二分法快速完成整个过程
-
-        var isSame = false;
-        var count = mats.Length;
-        if (count == 0)
-            throw new InvalidException("The count of mats can`t zero.");
-
-        var tp = mats[0].Type();
-        var size = mats[0].Size();
-
-        var lSame = new bool[count];
-        lSame[0] = true;
-
-        Parallel.For(1, count, new ParallelOptions() { MaxDegreeOfParallelism = thread }, (z) =>
-        {
-            lSame[z] = mats[z].Type() == tp && mats[z].Size() == size;
-        });
-
-        isSame = lSame.All(x => x);
-        return isSame;
-    }
-
     /// <summary>
     /// 
     /// </summary>
@@ -76,7 +26,7 @@ public static class MatsExtension
         Parallel.For(0, count, new ParallelOptions() { MaxDegreeOfParallelism = thread }, (z) =>
         {
             var mat = mats[z];
-            mat.MinMaxLoc(out var tMin, out var tMax);
+            mat.MinMaxLoc(out double tMin, out double tMax);
 
             lMin[z] = tMin;
             lMax[z] = tMax;
@@ -85,6 +35,8 @@ public static class MatsExtension
         min = lMin.Min();
         max = lMax.Max();
     }
+
+
 
     /// <summary>
     /// 从左到右，从上到下，从低到高
@@ -169,53 +121,6 @@ public static class MatsExtension
 
         array = new float[lenght];
         Array.Copy(data, array, width * height * depth);
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="mats"></param>
-    /// <param name="scale">等比例放缩</param>
-    /// <param name="thread"></param>
-    /// <returns></returns>
-    public static Mat[] Resize(this Mat[] mats, Vector scale, int thread = 8)
-    {
-        if (!mats.SameShape())
-            throw new InvalidException("The stack image must the same as each others that type and size.");
-
-        if (scale.X == 0 || scale.Y == 0 || scale.Z == 0)
-            throw new InvalidException("The resize scale cant be set 0.");
-
-        if (scale.X > 1 || scale.Y > 1 || scale.Z > 1)
-            throw new InvalidException("The scale must in 0-1");
-
-        if (Math.Abs(scale.X - 1) < DoubleThreshold &&
-            Math.Abs(scale.Y - 1) < DoubleThreshold &&
-            Math.Abs(scale.Z - 1) < DoubleThreshold) return mats;
-
-        var x = (int) Math.Ceiling(mats[0].Width * scale.X);
-        var y = (int) Math.Ceiling(mats[0].Height * scale.Y);
-        var z = (int) Math.Ceiling(mats.Length * scale.Z);
-
-        var newMats = new Mat[z];
-
-        var zList = new int[z];
-        for (var i = 0; i < z; i++)
-            zList[i] = (int) Math.Floor(i * (1 / scale.Z));
-
-        Parallel.For(0, z, new ParallelOptions() { MaxDegreeOfParallelism = thread }, (i) =>
-        {
-            var index = zList[i];
-            var dst = new Mat();
-            var src = mats[index];
-
-            Cv2.Resize(src, dst, new Size(x, y));
-            newMats[i] = dst;
-
-        });
-
-
-        return newMats;
     }
 
 

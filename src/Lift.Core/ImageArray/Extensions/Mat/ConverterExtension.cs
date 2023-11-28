@@ -3,12 +3,13 @@
 public static partial class MatExtension
 {
     /// <summary>
-    /// Converter to CV_8U
+    /// Converter to CV_8U,使用最大最小归一化来保证整体精度损失最小
     /// </summary>
     /// <param name="mat"></param>
+    /// <param name="toGray"></param>
     /// <returns></returns>
     /// <exception cref="NotSupportedException"></exception>
-    public static Mat ToU8(this Mat mat)
+    public static Mat ToU8(this Mat mat, bool toGray = false)
     {
         var rec = new Mat();
         var type = mat.Type();
@@ -17,9 +18,10 @@ public static partial class MatExtension
             return mat;
         if (type == MatType.CV_32FC1)
             mat.ConvertTo(rec, MatType.CV_8U, byte.MaxValue);
-        if (type == MatType.CV_16UC1)
+        else if (type == MatType.CV_16UC1)
             mat.ConvertTo(rec, MatType.CV_8U, 1.0 / (byte.MaxValue + 2));
-
+        else if (type == MatType.CV_64FC1)
+            rec = MatConverter.Channel1.F64ToU8(mat);
         else throw new NotSupportedException($"Not support type : {type}");
 
         return rec;
@@ -68,6 +70,24 @@ internal static class MatConverter
         {
             var rec = new Mat();
             mat.ConvertTo(rec, MatType.CV_32FC1, 1.0f / ushort.MaxValue);
+
+            return rec;
+        }
+
+        public static Mat F32ToU8(Mat mat)
+        {
+            var rec = new Mat();
+            mat.ConvertTo(rec, MatType.CV_8UC1, byte.MaxValue);
+
+            return rec;
+        }
+
+        public static Mat F64ToU8(Mat mat)
+        {
+            var rec = new Mat();
+            mat.Normalize(normType: NormTypes.MinMax).ConvertTo(rec, MatType.CV_8UC1, byte.MaxValue);
+
+            rec.GetArray(out byte[] v);
 
             return rec;
         }

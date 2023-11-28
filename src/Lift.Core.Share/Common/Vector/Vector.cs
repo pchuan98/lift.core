@@ -1,7 +1,7 @@
 ﻿namespace Lift.Core.Common;
 
 /// <summary>
-/// 
+/// 向量
 /// </summary>
 public partial class Vector
 {

@@ -1,7 +1,7 @@
 ﻿namespace Lift.Core.Common;
 
 /// <summary>
-/// 
+///  向量值的类型转换
 /// </summary>
 public partial class Vector
 {

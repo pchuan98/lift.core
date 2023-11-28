@@ -54,6 +54,16 @@ public class ImageArray : IDisposable
         Flag = ArrayFlag.OpenCv;
     }
 
+    public ImageArray(double[,] array)
+    {
+        Width = array.GetLength(0);
+        Height = array.GetLength(1);
+        StackCount = 0;
+
+        Object = array;
+        Flag = ArrayFlag.Determinant;
+    }
+
 
     /// <summary>
     /// image object data type

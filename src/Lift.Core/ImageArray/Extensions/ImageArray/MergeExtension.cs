@@ -16,8 +16,7 @@ public static partial class ImageArrayExtension
     {
         if (imgs.Aggregate(true, (current, img) => current && img.IsMat()))
             return MergeTools.MergeWithMats(imgs.Select(img => img.Object as Mat).ToArray()!, cols, rows, thread);
-        else
-            throw new NotSupportedException("");
+        throw new NotSupportedException("");
     }
 }
 

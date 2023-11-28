@@ -17,6 +17,16 @@ public enum ArrayFlag
     OpenCv = 1,
 
     /// <summary>
+    /// 一维数据
+    /// </summary>
+    Serial = 2,
+
+    /// <summary>
+    /// 二维数据
+    /// </summary>
+    Determinant = 4,
+
+    /// <summary>
     /// 
     /// </summary>
     Image = OpenCv,

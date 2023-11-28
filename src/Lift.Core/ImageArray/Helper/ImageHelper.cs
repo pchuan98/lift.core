@@ -111,8 +111,5 @@ public static class OpencvImageHelper
             Cv2.DestroyWindow(name);
         }
         else throw new InvalidException("The array object is not Mat.");
-
-
-
     }
 }

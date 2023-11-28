@@ -15,8 +15,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)Common\Vector\Vector.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Constant\ValueBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exception\InvalidException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Exception\NeverSupportedException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exception\NotSupportedException.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Helper\JsonHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Json\JsonAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utils\Json\JsonParser.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helper\RuntimeHelper.cs" />
   </ItemGroup>
 </Project>

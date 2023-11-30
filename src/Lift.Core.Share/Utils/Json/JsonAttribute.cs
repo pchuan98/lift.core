@@ -4,50 +4,25 @@
 public class JsonAttribute : Attribute
 {
     /// <summary>
-    /// 
+    /// The default path for save and read json file path.
+    /// When the path is null, the default path not exists.So you must deliver a value with .Save and .Read
     /// </summary>
     public string? Path { get; set; } = null;
 
     /// <summary>
-    /// 
+    /// Wether to include all properties.
     /// </summary>
     public bool IncludeAll { get; set; } = true;
 }
 
 /// <summary>
-/// Int属性的数据
+/// When the property attach this attribute, the property will be ignored.
 /// </summary>
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-public class JsonIntAttribute : Attribute
-{
-    /// <summary>
-    /// 
-    /// </summary>
-    public int Default { get; set; } = 0;
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public int Min { get; set; } = 0;
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public int Max { get; set; } = 0;
-
-    /// <summary>
-    /// 
-    /// </summary>
-    public bool Usage { get; set; } = false;
-}
+public class ExcludeAttribute : Attribute { }
 
 /// <summary>
 /// 
 /// </summary>
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-public class JsonExcludeAttribute : Attribute
-{
-
-}
-
-
+public class IncludeAttribute : Attribute { }

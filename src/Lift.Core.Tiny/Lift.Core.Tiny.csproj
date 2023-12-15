@@ -7,15 +7,12 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Description>core package for lift</Description>
     <PackageIcon>lift.png</PackageIcon>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <Import Project="..\Lift.Core.Share\Lift.Core.Share.projitems" Label="Shared" />
 
-  <ItemGroup>
-    <None Include="..\..\imgs\lift.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
+
 
 </Project>

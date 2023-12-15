@@ -1,4 +1,4 @@
-﻿namespace Lift.Core.Common;
+﻿namespace Lift.Core.ImageArray;
 
 /**
  * Pixel        : 图像元素，图像的最小单位

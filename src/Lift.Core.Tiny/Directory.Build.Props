@@ -8,6 +8,7 @@
     <LangVersion>latest</LangVersion>
     <Authors>pchuan98</Authors>
     <RepositoryUrl>https://github.com/pchuan98/lift.core</RepositoryUrl>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

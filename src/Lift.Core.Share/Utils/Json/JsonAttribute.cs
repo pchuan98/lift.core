@@ -1,5 +1,8 @@
 ﻿namespace Lift.Core.Utils.Json;
 
+/// <summary>
+/// 
+/// </summary>
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
 public class JsonAttribute : Attribute
 {
@@ -10,7 +13,7 @@ public class JsonAttribute : Attribute
     public string? Path { get; set; } = null;
 
     /// <summary>
-    /// Wether to include all properties.
+    /// Wether to include all properties.W
     /// </summary>
     public bool IncludeAll { get; set; } = true;
 }

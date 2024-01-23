@@ -61,7 +61,7 @@ public static class JsonParser<T> where T : class
         {
             if (Attribute.GetCustomAttribute(typeof(T), typeof(JsonAttribute)) is not JsonAttribute attr)
                 return false;
-
+             
             path ??= attr.Path;
 
             if (path is null) throw new InvalidException("The path must not null");

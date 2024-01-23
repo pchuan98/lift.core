@@ -17,6 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Exception\InvalidException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exception\NeverSupportedException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Exception\NotSupportedException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Externals\SimplexNoise.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ImageArray\ArrayFlag.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ImageArray\ImageArray.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ImageArray\ImageMetadata.cs" />

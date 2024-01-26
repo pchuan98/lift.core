@@ -34,3 +34,120 @@ internal enum MatTypeAsInt
     CV_64FC3 = -1,
     CV_64FC4 = -1,
 }
+
+/// <summary>
+/// 
+/// </summary>
+public static class MatRange
+{
+    /// <summary>
+    /// 
+    /// </summary>
+    public const int MinU8 = byte.MinValue;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const int MaxU8 = byte.MaxValue;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const int MinS8 = sbyte.MinValue;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const int MaxS8 = sbyte.MaxValue;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const int MinU16 = ushort.MinValue;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const int MaxU16 = ushort.MaxValue;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const int MinS16 = short.MinValue;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const int MaxS16 = short.MaxValue;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const int MinS32 = int.MinValue;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const int MaxS32 = int.MaxValue;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const float MinF32 = 0f;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const float MaxF32 = 1f;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const double MinF64 = 0;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const double MaxF64 = 1;
+}
+
+/// <summary>
+/// 
+/// </summary>
+public static class MatDepth
+{
+    /// <summary>
+    /// 
+    /// </summary>
+    public const int U8 = 0;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const int S8 = 1;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const int U16 = 2;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const int S16 = 3;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const int S32 = 4;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const int F32 = 5;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public const int F64 = 6;
+}

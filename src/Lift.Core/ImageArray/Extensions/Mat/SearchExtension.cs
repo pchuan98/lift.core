@@ -1,7 +1,17 @@
 ﻿namespace Lift.Core.ImageArray.Extensions;
 
+/// <summary>
+/// 
+/// </summary>
 public static partial class MatExtension
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="mat"></param>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    /// <exception cref="NotSupportedException"></exception>
     public static (int row, int col) SearchRowPrecedence(this Mat mat, double value)
     {
         var width = mat.Width;

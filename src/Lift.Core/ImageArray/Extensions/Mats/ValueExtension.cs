@@ -1,5 +1,8 @@
 ﻿namespace Lift.Core.ImageArray.Extensions;
 
+/// <summary>
+/// 
+/// </summary>
 public static partial class MatsExtension
 {
     /// <summary>
@@ -10,12 +13,14 @@ public static partial class MatsExtension
     /// <param name="max"></param>
     /// <param name="thread"></param>
     /// <exception cref="InvalidException"></exception>
-    public static void MinMaxLoc(this Mat[] mats, out double min, out double max, int thread = 8)
+    public static void MinMaxLoc(this IEnumerable<Mat> mats, out double min, out double max, int thread = 8)
     {
+        var matsArray = mats.ToArray();
+
         min = 0;
         max = 0;
 
-        var count = mats.Length;
+        var count = matsArray.Length;
 
         if (count == 0)
             throw new InvalidException("The count of mats can`t zero.");
@@ -25,8 +30,8 @@ public static partial class MatsExtension
 
         Parallel.For(0, count, new ParallelOptions() { MaxDegreeOfParallelism = thread }, (z) =>
         {
-            var mat = mats[z];
-            mat.MinMaxLoc(out double tMin, out double tMax);
+            var mat = matsArray[z];
+            mat.MinMaxLoc(out var tMin, out double tMax);
 
             lMin[z] = tMin;
             lMax[z] = tMax;
@@ -63,8 +68,6 @@ public static partial class MatsExtension
         var channel = header.Channels();
 
         if (channel != 1) throw new System.Exception();
-
-
 
         // todo 内存拼接(mat.Ptr())，后面再修改，先使用简单版本
 

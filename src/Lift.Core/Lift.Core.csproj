@@ -8,10 +8,7 @@
     <Description>core package for lift</Description>
     <PackageIcon>lift.png</PackageIcon>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <Version>1.0.0.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

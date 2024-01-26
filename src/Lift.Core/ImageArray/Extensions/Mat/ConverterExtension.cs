@@ -6,23 +6,41 @@ public static partial class MatExtension
     /// Converter to CV_8U,使用最大最小归一化来保证整体精度损失最小
     /// </summary>
     /// <param name="mat"></param>
-    /// <param name="toGray"></param>
     /// <returns></returns>
     /// <exception cref="NotSupportedException"></exception>
-    public static Mat ToU8(this Mat mat, bool toGray = false)
+    public static Mat ToU8(this Mat mat)
     {
         var rec = new Mat();
         var type = mat.Type();
 
-        if (type == MatType.CV_8UC1)
-            return mat;
-        if (type == MatType.CV_32FC1)
-            mat.ConvertTo(rec, MatType.CV_8U, byte.MaxValue);
-        else if (type == MatType.CV_16UC1)
-            mat.ConvertTo(rec, MatType.CV_8U, 1.0 / (byte.MaxValue + 2));
-        else if (type == MatType.CV_64FC1)
-            rec = MatConverter.Channel1.F64ToU8(mat);
-        else throw new NotSupportedException($"Not support type : {type}");
+        switch (type.Depth)
+        {
+            case MatDepth.U8:
+                return mat;
+            case MatDepth.S8:
+                (mat + MatRange.MaxS8)
+                    .ToMat()
+                    .ConvertTo(rec, MatType.CV_8U, (double) MatRange.MaxU8 / MatRange.MaxU16);
+                break;
+            case MatDepth.U16:
+                mat.ConvertTo(rec, MatType.CV_8U, (double) MatRange.MaxU8 / MatRange.MaxU16);
+                break;
+            case MatDepth.S16:
+                (mat + MatRange.MaxS16)
+                    .ToMat()
+                    .ConvertTo(rec, MatType.CV_8U, (double) MatRange.MaxU8 / MatRange.MaxU16);
+                break;
+            case MatDepth.S32:
+                throw new System.Exception();
+            case MatDepth.F32:
+                mat.ConvertTo(rec, MatType.CV_8U, MatRange.MaxU8);
+                break;
+            case MatDepth.F64:
+                mat.ConvertTo(rec, MatType.CV_8U, MatRange.MaxU8);
+                break;
+            default:
+                break;
+        }
 
         return rec;
     }

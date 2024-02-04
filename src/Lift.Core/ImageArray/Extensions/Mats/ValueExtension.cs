@@ -126,5 +126,29 @@ public static partial class MatsExtension
         Array.Copy(data, array, width * height * depth);
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="mats"></param>
+    /// <returns></returns>
+    public static Mat? MaxMat(this IEnumerable<Mat> mats)
+    {
+        var array = mats.ToArray();
 
+        if (!array.SameShape())
+            throw new InvalidException("The stack image must the same as each others that type and size.");
+
+        if (array.Any(item => item.Channels() != 1))
+            throw new System.Exception();
+
+        if (array.Length == 0) return null;
+        if (array.Length == 1) return array[0];
+
+        var max = array[0].Clone();
+
+        for (var i = 1; i < array.Length; i++)
+            Cv2.Max(array[i], max, max);
+
+        return max;
+    }
 }

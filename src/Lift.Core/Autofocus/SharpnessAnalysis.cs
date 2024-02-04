@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OpenCvSharp;
-
-namespace Lift.Core.Autofocus;
+﻿namespace Lift.Core.Autofocus;
 
 /// <summary>
 /// 
@@ -39,21 +32,60 @@ public static class SharpnessAnalysis
     /// <param name="i0"></param>
     /// <param name="i1"></param>
     /// <returns></returns>
-    public static double GetValue(this Mat mat, int i0, int i1)
+    public static double GetValue(this Mat mat, int row, int col)
     {
         if (mat.Channels() != 1) throw new System.Exception();
 
         return mat.Depth() switch
         {
-            MatDepth.U8 => (double) mat.Get<byte>(i0, i1),
-            MatDepth.S8 => (double) mat.Get<sbyte>(i0, i1),
-            MatDepth.U16 => (double) mat.Get<ushort>(i0, i1),
-            MatDepth.S16 => (double) mat.Get<short>(i0, i1),
-            MatDepth.S32 => (double) mat.Get<int>(i0, i1),
-            MatDepth.F32 => (double) mat.Get<float>(i0, i1),
-            MatDepth.F64 => mat.Get<double>(i0, i1),
+            MatDepth.U8 => (double) mat.Get<byte>(row, col),
+            MatDepth.S8 => (double) mat.Get<sbyte>(row, col),
+            MatDepth.U16 => (double) mat.Get<ushort>(row, col),
+            MatDepth.S16 => (double) mat.Get<short>(row, col),
+            MatDepth.S32 => (double) mat.Get<int>(row, col),
+            MatDepth.F32 => (double) mat.Get<float>(row, col),
+            MatDepth.F64 => mat.Get<double>(row, col),
             _ => throw new System.Exception()
         };
+    }
+
+    /// <summary>
+    /// 设置值
+    /// </summary>
+    /// <param name="mat"></param>
+    /// <param name="row"></param>
+    /// <param name="col"></param>
+    /// <param name="value"></param>
+    public static void SetValue(this Mat mat, int row, int col, double value)
+    {
+        if(mat.Channels() != 1) throw new System.Exception();
+
+        switch (mat.Depth())
+        {
+            case MatDepth.U8:
+                mat.Set<byte>(row, col, (byte) value);
+                break;
+            case MatDepth.S8:
+                mat.Set<sbyte>(row, col, (sbyte) value);
+                break;
+            case MatDepth.U16:
+                mat.Set<ushort>(row, col, (ushort) value);
+                break;
+            case MatDepth.S16:
+                mat.Set<short>(row, col, (short) value);
+                break;
+            case MatDepth.S32:
+                mat.Set<int>(row, col, (int) value);
+                break;
+            case MatDepth.F32:
+                mat.Set<float>(row, col, (float) value);
+                break;
+            case MatDepth.F64:
+                mat.Set<double>(row, col, value);
+                break;
+            default:
+                throw new System.Exception();
+        }
     }
 
     /// <summary>
@@ -87,15 +119,10 @@ public static class SharpnessAnalysis
         Cv2.Filter2D(mean, con2, -1, ken2);
 
         for (var i = 0; i < height; i++)
-        {
             for (var j = 0; j < width; j++)
-            {
-                sum += Math.Sqrt(Math.Pow(con1.GetValue(i, j), 2) + Math.Pow(con2.GetValue(i, j), 2));
-            }
-        }
+                sum += Math.Sqrt(Math.Pow(con1.GetValue(i, j), 2)
+                                 + Math.Pow(con2.GetValue(i, j), 2));
 
         return sum;
     }
-
-   
 }

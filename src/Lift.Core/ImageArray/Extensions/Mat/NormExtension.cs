@@ -62,4 +62,16 @@ public static partial class MatExtension
 
         return recall;
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="mat"></param>
+    /// <returns></returns>
+    public static Mat HistNorm(this Mat mat)
+    {
+        var result = new Mat();
+        Cv2.EqualizeHist(mat, result);
+        return result;
+    }
 }

@@ -46,4 +46,23 @@ public static partial class MatExtension
         //gaussian.CopyTo(result[roi]);
         return result;
     }
+
+    /// <summary>
+    /// 自动从左到右拼接
+    /// </summary>
+    /// <param name="left"></param>
+    /// <param name="right"></param>
+    /// <param name="overlap"></param>
+    /// <param name="offset"></param>
+    /// <returns></returns>
+    public static Mat? AutoMergeFromRight(this Mat left, Mat right, int overlap, int offset)
+    {
+        if (left.Type() != right.Type())
+            throw new System.Exception("The format of mat must be consistant.");
+
+        if (left is { Width: 0, Height: 0 } && right.Width != 0 && right.Height != 0) return right;
+        if(right is { Width: 0, Height: 0 } ) return left;
+
+        return null;
+    }
 }

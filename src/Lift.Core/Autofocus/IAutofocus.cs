@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace Lift.Core.Autofocus;
 
+/// <summary>
+/// 
+/// </summary>
 public interface IAutofocus
 {
+    
 }

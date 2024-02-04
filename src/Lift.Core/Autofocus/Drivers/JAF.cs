@@ -1,37 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Lift.Core.Share.Extensions;
+﻿using System.Runtime.CompilerServices;
 
-namespace Lift.Core.Autofocus;
+namespace Lift.Core.Autofocus.Drivers;
 
 /// <summary>
 /// 
 /// </summary>
-public class JAF
+public class Jaf
 {
     /// <summary>
-    /// 
+    /// 粗找步进
     /// </summary>
-    public double SizeFirst { get; set; } = 2;
+    public double FirstStep { get; set; } = 2;
 
     /// <summary>
-    /// 
+    /// 第一次寻找次数
     /// </summary>
-    public int NumFirst { get; set; } = 1;
+    public int FirstCount { get; set; } = 1;
 
     /// <summary>
-    /// 
+    /// 精找步进
     /// </summary>
-    public double SizeSecond { get; set; } = 0.2;
+    public double SecondStep { get; set; } = 0.2;
 
     /// <summary>
-    /// 
+    /// 第二次精找次数
     /// </summary>
-    public int NumSecond { get; set; } = 5;
+    public int SeccondCount { get; set; } = 5;
 
     /// <summary>
     /// 
@@ -39,16 +33,26 @@ public class JAF
     public double Threshold { get; set; } = 0.2;
 
     /// <summary>
-    /// 
+    /// 评估的选取范围
     /// </summary>
-    public double CropSize { get; set; } = 0.2;
+    public double CropSize { get; set; } = 0.5;
+
+    /// <summary>
+    /// 最小的z，也是起始点
+    /// </summary>
+    public double MinZ { get; set; } = -75;
+
+    /// <summary>
+    /// 最大z
+    /// </summary>
+    public double MaxZ { get; set; } = 75;
 
     /// <summary>
     /// 聚焦评分指数
     /// </summary>
     /// <param name="mat"></param>
     /// <returns></returns>
-    public double Score(Mat mat)
+    public virtual double Score(Mat mat)
     {
         var width = (int) (CropSize * mat.Width);
         var height = (int) (CropSize * mat.Height);
@@ -64,10 +68,9 @@ public class JAF
         var con = new Mat();
         Cv2.Filter2D(mat, con, -1, kernel);
 
-
         for (var i = 0; i < height; i++)
             for (var j = 0; j < width; j++)
-                sharpNess += Math.Pow(con.GetValue(ow + i, oh + j), 2);
+                sharpNess += Math.Pow(con.GetValue(oh + i, ow + j), 2);
 
         return sharpNess;
     }
@@ -75,10 +78,13 @@ public class JAF
 
     #region 相机接口
 
-    public virtual bool Capture(out Mat mat)
-    {
-        throw new System.Exception();
-    }
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="mat"></param>
+    /// <returns></returns>
+    /// <exception cref="System.Exception"></exception>
+    public virtual bool Capture(out Mat mat) => throw new System.Exception();
 
     #endregion
 
@@ -90,10 +96,7 @@ public class JAF
     /// <param name="z"></param>
     /// <returns></returns>
     /// <exception cref="System.Exception"></exception>
-    public virtual bool GetPosition(out double z)
-    {
-        throw new System.Exception();
-    }
+    public virtual bool GetPosition(out double z) => throw new System.Exception();
 
     /// <summary>
     /// 设置当前坐标
@@ -101,32 +104,34 @@ public class JAF
     /// </summary>
     /// <param name="z"></param>
     /// <exception cref="System.Exception"></exception>
-    public virtual bool SetPosition(double z)
-    {
-        throw new System.Exception();
-    }
+    public virtual bool SetPosition(double z) => throw new System.Exception();
+
+
 
     #endregion
 
     /// <summary>
-    /// 
+    /// 聚焦
     /// </summary>
-    void Focus()
+    public virtual void Focus()
     {
         double bestZ = 5000;
         double bestScore = 0;
         double currentScore = 0;
 
         GetPosition(out var currentZ);
-        var baseZ = currentZ - SizeFirst * NumFirst;
+        var baseZ = currentZ - FirstStep * FirstCount;
 
         SetPosition(baseZ);
         Thread.Sleep(300);
 
         // rough search
-        for (var i = 0; i < 2 * NumFirst + 1; i++)
+        for (var i = 0; i < 2 * FirstCount + 1; i++)
         {
-            SetPosition(baseZ + i * SizeFirst);
+            var z = baseZ + i * FirstStep;
+            if (z <= MinZ || z >= MaxZ) continue;
+
+            SetPosition(z);
             GetPosition(out currentZ);
 
             Capture(out var capture);
@@ -137,20 +142,23 @@ public class JAF
                 bestScore = currentScore;
                 bestZ = currentZ;
             }
-            else if (bestScore - currentScore > Threshold * bestScore && bestZ < 5000)
+            else if (bestScore - currentScore > Threshold * bestScore)
                 break;
         }
 
-        baseZ = bestZ - SizeFirst * NumFirst;
+        baseZ = bestZ - SecondStep * SeccondCount;
         SetPosition(baseZ);
         Thread.Sleep(100);
 
         bestScore = 0;
 
         // fine search
-        for (var i = 0; i < 2 * NumSecond + 1; i++)
+        for (var i = 0; i < 2 * SeccondCount + 1; i++)
         {
-            SetPosition(baseZ + i * SizeSecond);
+            var z = baseZ + i * SecondStep;
+            if (z <= MinZ || z >= MaxZ) continue;
+
+            SetPosition(baseZ + i * SecondStep);
             GetPosition(out currentZ);
 
             Capture(out var capture);
@@ -161,7 +169,7 @@ public class JAF
                 bestScore = currentScore;
                 bestZ = currentZ;
             }
-            else if (bestScore - currentScore > Threshold * bestScore && bestZ < 5000)
+            else if (bestScore - currentScore > Threshold * bestScore)
                 break;
         }
 

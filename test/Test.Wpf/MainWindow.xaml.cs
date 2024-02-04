@@ -46,8 +46,8 @@ public partial class MainViewModel : ObservableObject
     {
         var mats = new List<string>()
             {
-                @"E:\.test\stitch3\X_-18500_Y_-1500.TIF",
-                @"E:\.test\stitch3\X_-17000_Y_-1500.TIF",
+                @"E:\.test\stitch\4-4.TIF",
+                @"E:\.test\stitch\4-5.TIF",
             }
             .Select(item => Cv2.ImRead(item));
 

@@ -88,24 +88,5 @@ public class CameraStitcherProvider : IStitcherProvider
 
 public partial class StitcherViewModel : ObservableObject
 {
-    public IStitcher Scanner = new ScanStitcher()
-    {
-        Provider = new CameraStitcherProvider(),
-        PerPixelDistance = 1,
-        Width = 5000,
-        Height = 5000,
-        LeftTop = (0, 0),
-        RightBottom = (5000, 5000)
-    };
-
-    [ObservableProperty]
-    private BitmapFrame _frame;
-
-    [RelayCommand]
-    void Step()
-    {
-        Scanner.Step();
-
-        Frame = BitmapFrame.Create(Scanner.StitchMat.ToBitmapSource());
-    }
+    
 }

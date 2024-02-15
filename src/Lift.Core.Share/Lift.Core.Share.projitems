@@ -9,6 +9,7 @@
     <Import_RootNamespace>Lift.Core.Share</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Common\VectorPlus.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\Vector\VectorExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\Vector\VectorValue.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\Vector\VectorOperator.cs" />

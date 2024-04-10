@@ -49,7 +49,7 @@ public static partial class Algorithm
 
     /// <summary>
     /// 去除坏点
-    ///
+    /// 
     /// todo 当前检测算法无法处理最边上的异常点
     /// todo 另外当前检测仅仅针对单通道情况
     /// </summary>
@@ -62,10 +62,18 @@ public static partial class Algorithm
     /// 2 - gaussian
     /// </param>
     /// <param name="thread">count of parallel</param>
+    /// <param name="suspicious_threshold"></param>
     /// <returns></returns>
-    public static Mat DeadPixelCorrection(this Mat mat, int radius = 2, double threshold = 50, int mode = 0, int thread = 8)
+    public static Mat DeadPixelCorrection(this Mat mat,
+        int radius = 2,
+        double threshold = 50,
+        int mode = 0,
+        int thread = 8,
+        double suspicious_threshold = 0.01)
     {
         var deadCount = 0;
+        var done = false;
+
         var verbose = true;
 
         var cols = mat.Cols;
@@ -80,7 +88,7 @@ public static partial class Algorithm
         result.MinMaxLoc(out double min, out double max);
 
         var suspicious = new List<(int row, int col)>();
-        var suspiciousCount = (int) (cols * rows * 0.01 / 2);
+        var suspiciousCount = (int) (cols * rows * suspicious_threshold);
 
         var sort = new Mat();
         Cv2.SortIdx(mat.Reshape(1, 1), sort, SortFlags.Ascending);
@@ -110,6 +118,7 @@ public static partial class Algorithm
                 suspicious.Add((row, col));
         }
 
+
         Parallel.ForEach(suspicious, new ParallelOptions()
         {
             MaxDegreeOfParallelism = thread
@@ -118,26 +127,25 @@ public static partial class Algorithm
             var (row, col) = item;
             var isDead = IsDeadPixel(result, row, col, radius, threshold);
 
-            if (isDead)
-            {
-                deadCount++;
+            if (!isDead)
+                return;
+             
+            deadCount += 1;
 
-                // mean
-                var area = new List<double>();
-                for (var i = row - radius; i < row + radius; i++)
-                    for (var j = col - radius; j < col + radius; j++)
-                    {
-                        if (i == row && j == col) continue;
-                        area.Add(result.GetValue(i, j));
-                    }
+            // mean
+            var area = new List<double>();
+            for (var i = row - radius; i < row + radius; i++)
+                for (var j = col - radius; j < col + radius; j++)
+                {
+                    if (i == row && j == col) continue;
+                    area.Add(result.GetValue(i, j));
+                }
 
-                area.Sort();
-                result.SetValue(row, col, area[area.Count / 2]);
-            }
+            area.Sort();
+            result.SetValue(row, col, area[area.Count / 2]);
         });
 
-        Debug.WriteLineIf(verbose, $"{deadCount}");
-
+        Console.WriteLine($"{deadCount}");
         return result;
     }
 }

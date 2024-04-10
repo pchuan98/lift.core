@@ -1,4 +1,7 @@
-﻿namespace Lift.Core.ImageArray.Extensions;
+﻿using System.Reflection.PortableExecutable;
+using System.Runtime.InteropServices;
+
+namespace Lift.Core.ImageArray.Extensions;
 
 public static partial class MatExtension
 {
@@ -31,7 +34,9 @@ public static partial class MatExtension
                     .ConvertTo(rec, MatType.CV_8U, (double) MatRange.MaxU8 / MatRange.MaxU16);
                 break;
             case MatDepth.S32:
-                throw new System.Exception();
+                mat.MinMaxLoc(out double min, out double max);
+                mat.ConvertTo(rec, MatType.CV_8U, 255.0 / max);
+                break;
             case MatDepth.F32:
                 mat.ConvertTo(rec, MatType.CV_8U, MatRange.MaxU8);
                 break;
@@ -43,6 +48,13 @@ public static partial class MatExtension
         }
 
         return rec;
+    }
+
+    public static Mat ToU8C3(this Mat mat)
+    {
+        var u8 = mat.ToU8();
+        Cv2.CvtColor(u8, u8, ColorConversionCodes.GRAY2BGR);
+        return u8;
     }
 
     /// <summary>
@@ -64,6 +76,28 @@ public static partial class MatExtension
             _ => throw new System.Exception(),
         };
     }
+
+    /// <summary>
+    /// 读取Raw格式数据
+    /// </summary>
+    /// <param name="data"></param>
+    /// <param name="t"></param>
+    /// <param name="rows"></param>
+    /// <param name="cols"></param>
+    /// <returns></returns>
+    public static Mat FromRaw(this byte[] data, MatType t, int rows, int cols)
+    {
+        var img = new Mat(new Size(cols, rows), t);
+        var handle = GCHandle.Alloc(data, GCHandleType.Pinned);
+
+        Array.Copy(data, data, data.Length);
+
+        Marshal.Copy(data, 0, img.Data, data.Length);
+        handle.Free();
+
+        return img;
+    }
+
 }
 
 /// <summary>

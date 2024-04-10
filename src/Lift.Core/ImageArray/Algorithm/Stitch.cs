@@ -73,12 +73,11 @@ public static partial class Algorithm
     /// <param name="mats"></param>
     /// <param name="param"></param>
     /// <returns></returns>
-    public static Mat? Stitching(this IEnumerable<Mat> mats, StitchParams? param = null)
+    private static Mat? Stitching(this IEnumerable<Mat> mats, StitchParams? param = null)
     {
         param ??= new StitchParams();
 
         var stitcher = Stitcher.Create(param.IsPanorama ? Stitcher.Mode.Panorama : Stitcher.Mode.Scans);
-
         stitcher.RegistrationResol = param.RegistrationResol;
         stitcher.SeamEstimationResol = param.SeamEstimationResol;
         //stitcher.CompositingResol = param.CompositingResol;
@@ -116,6 +115,8 @@ public static partial class Algorithm
                 Console.WriteLine("The stitching result is null.");
             }
         }
+
+        var sss = stitcher.EstimateTransform(new []{ Cv2.ImRead(@"F:\.test\stitch2\5-10.jpg") , Cv2.ImRead(@"F:\.test\stitch2\5-11.jpg") });
 
         return result;
     }
@@ -383,7 +384,7 @@ public class ScanStitcher : IStitcher
 
         if (r == 0 && c == 0)
             mat.CopyTo(StitchMat[new Rect(0, 0, mat.Width, mat.Height)]);
-        
+
 
         var enableStitch = false;
 

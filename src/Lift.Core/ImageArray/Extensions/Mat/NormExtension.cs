@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Lift.Core.ImageArray.Extensions;
 
@@ -11,7 +12,7 @@ namespace Lift.Core.ImageArray.Extensions;
 public static partial class MatExtension
 {
     /// <summary>
-    /// 
+    /// Max value
     /// </summary>
     /// <param name="mat"></param>
     /// <returns></returns>
@@ -30,7 +31,7 @@ public static partial class MatExtension
         };
 
     /// <summary>
-    /// 
+    /// Min value
     /// </summary>
     /// <param name="mat"></param>
     /// <returns></returns>
@@ -49,19 +50,19 @@ public static partial class MatExtension
         };
 
     /// <summary>
-    /// 最大最小归一化
+    /// 范围归一化，当min和max置空，默认为最大最小归一化
     /// </summary>
     /// <param name="mat"></param>
+    /// <param name="min"></param>
+    /// <param name="max"></param>
     /// <returns></returns>
-    public static Mat MinMaxNorm(this Mat mat)
-    {
-        var alpha = GetAlpha(mat);
-        var beta = GetBeta(mat);
-
-        var recall = mat.Normalize(alpha, beta, NormTypes.MinMax);
-
-        return recall;
-    }
+    /// <exception cref="System.Exception"></exception>
+    public static Mat RangeNorm(this Mat mat, double? min = null, double? max = null)
+        => min is null && max is null
+            ? mat.Normalize(GetAlpha(mat), GetBeta(mat), NormTypes.MinMax)
+            : min is { } dmin && max is { } dmax
+                ? (((mat.Threshold(dmin, dmax, dmin, dmax) - dmin) / (dmax - dmin)) * GetAlpha(mat)).ToMat()
+                : throw new System.Exception("The min and max value must not null.");
 
     /// <summary>
     /// 
@@ -74,4 +75,64 @@ public static partial class MatExtension
         Cv2.EqualizeHist(mat, result);
         return result;
     }
+
+    /// <summary>
+    /// Set all pixels smaller than min to val, and ensure that values ​​larger than min remain unchanged
+    /// </summary>
+    /// <param name="mat"></param>
+    /// <param name="min"></param>
+    /// <param name="val">replace value</param>
+    /// <returns></returns>
+    public static Mat MinThreshold(this Mat mat, double min, double val = 0)
+    {
+        var threshold = new Mat();
+
+        if (val == 0)
+            Cv2.Threshold(mat, threshold, min, 0, ThresholdTypes.Tozero);
+        else
+        {
+            var alpha = GetAlpha(mat);
+            var mask = new Mat();
+            Cv2.Threshold(mat, mask, min, alpha, ThresholdTypes.Binary);
+            threshold = new Mat(mat.Size(), mat.Type(), new Scalar(val));
+            mat.CopyTo(threshold, mask);
+        }
+        return threshold;
+    }
+
+    /// <summary>
+    /// Set all pixels greater than max to val, and ensure that values ​​greater than max remain unchanged
+    /// </summary>
+    /// <param name="mat"></param>
+    /// <param name="max"></param>
+    /// <param name="val"></param>
+    /// <returns></returns>
+    public static Mat MaxThreshold(this Mat mat, double max, double val = 0)
+    {
+        var threshold = new Mat();
+
+        if (val == 0)
+            Cv2.Threshold(mat, threshold, max, 0, ThresholdTypes.TozeroInv);
+        else
+        {
+            var alpha = GetAlpha(mat);
+            var mask = new Mat();
+            Cv2.Threshold(mat, mask, max, alpha, ThresholdTypes.BinaryInv);
+            threshold = new Mat(mat.Size(), mat.Type(), new Scalar(val));
+            mat.CopyTo(threshold, mask);
+        }
+        return threshold;
+    }
+
+    /// <summary>
+    /// 阈值化
+    /// </summary>
+    /// <param name="mat"></param>
+    /// <param name="min"></param>
+    /// <param name="max"></param>
+    /// <param name="minVal"></param>
+    /// <param name="maxVal"></param>
+    /// <returns></returns>
+    public static Mat Threshold(this Mat mat, double min, double max, double minVal = 0, double maxVal = 1)
+        => mat.MinThreshold(min, minVal).MaxThreshold(max, maxVal);
 }
